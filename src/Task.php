@@ -169,8 +169,10 @@ abstract class Task extends \yii\base\Component
         $isDue = in_array($model->status_id, [SchedulerTask::STATUS_DUE, SchedulerTask::STATUS_OVERDUE, SchedulerTask::STATUS_ERROR]);
         $isRunning = $model->status_id == SchedulerTask::STATUS_RUNNING;
         $overdue = false;
+        if ($model->started_at){
         if((strtotime($model->started_at) + $this->overdueThreshold) <= strtotime("now")) {
             $overdue = true;
+        }
         }
 
         return ($model->active && ((!$isRunning && ($isDue || $forceRun)) || ($isRunning && $overdue)));
